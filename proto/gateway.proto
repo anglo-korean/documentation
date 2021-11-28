@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option go_package = "github.com/anglo-korean/anko-go";
+option go_package = "github.com/anglo-korean/anko-go-sdk";
 
 // Forecasts streams a series of Forecast messages, containing stock price movements
 // Anglo Korean have forecasted from a series of sources.
