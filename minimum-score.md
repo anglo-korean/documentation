@@ -1,7 +1,8 @@
 ---
 title: Minimum Score
 parent: Forecasts
---
+nav_order: 0
+---
 
 # On Minimum Score
 

@@ -34,7 +34,7 @@ For now we will use the other feature; creating *Tokens*.
 
 Anko Investor uses token-based authentication to ensure you get access to the Forecasts you're entitled to, and are expecting.
 
-Click the + next to *Tokens* and fill out the form. [*Minimum Score* is described here](/forecasts/minimum-score).
+Click the + next to *Tokens* and fill out the form. [*Minimum Score* is described here](/minimum-score).
 
 On Creation, your token will appear. This is the last time your token will appear, so make a note of it!
 
