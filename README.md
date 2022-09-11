@@ -1,6 +1,7 @@
 ---
 title: Welcome
 nav_order: 0
+permalink: /
 ---
 # Anko Investor
 
