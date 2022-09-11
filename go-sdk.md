@@ -74,7 +74,7 @@ $ go run main.go
 or:
 
 ```bash
-$ bo build
+$ go build
 $ ./my-anko-app
 ```
 
