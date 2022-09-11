@@ -21,7 +21,7 @@ We enforce MFA on all logins via Auth0.
 
 Anko Investor generates a token following the scheme:
 
-```golang
+```go
 fmt.Sprintf("anko-%s", hex.EncodeToString(uuid.Must(uuid.NewV4()).Bytes()))
 ```
 
