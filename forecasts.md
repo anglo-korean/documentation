@@ -1,0 +1,108 @@
+---
+title: Forecasts
+has_children: true
+nav_order: 3
+---
+
+```protobuf
+syntax = "proto3";
+
+option go_package = "github.com/anglo-korean/anko-go-sdk;anko";
+
+// Forecasts streams a series of Forecast messages, containing stock price movements
+// Anglo Korean have forecasted from a series of sources.
+//
+// Each new stream request is Authenticated and Authorized with a token. This is used
+// to first ensure a client even has access to forecasts, and then (internally) to
+// ensure a client receives the forecasts they've been granted access to.
+//
+// Further, tokens are revalidated every 30m. This is done to ensure that upgrades/
+// downgrades are actioned properly. Clients are advised that restarting connections
+// will also revalidate connections (so: after upgrading a token, a client may not
+// need to wait for 30m).
+service Forecasts {
+  rpc Stream(Metadata) returns (stream Forecast) {}
+}
+
+// Metadata prvides some simple additional information a request might want
+// to include, such as user-agent data, or some key-values for later reporting.
+//
+// All fields are totally optional, though we would prefer that any clients
+// where a token is used across multiple clients, a unique UA is set _per_ client.
+// This will help debugging issues.
+//
+// Tags are useful for reporting.
+message Metadata {
+  string  ua = 1;
+  repeated Tag tags = 2;
+}
+
+// Tag is a key/value pair, used in reporting.
+//
+// For instance, a user may wish to know how many client failures occured
+// for tag "environment=production", or "version=2.0.0"
+message Tag {
+  string key = 1;
+  string value = 2;
+}
+
+// Forecast represents the product of the analysis of a piece of intelligence.
+//
+// A piece of intelligence is processed through the Anglo Korean pipeline to
+// determine the stock market symbol (represented here as a RIC, see:
+// https://en.wikipedia.org/wiki/Reuters_Instrument_Code) a piece of intelligence will
+// affect, the forecast change as a 'Label' (the definitions of which are described
+// in the Label message), and a confidence score for this forecast (as a floating
+// point value between 0 and 1, where 0 is a lack of confidence and 1 is complete
+// confidence).
+//
+// For users which do not speak RIC, we also embed our internal representation of a
+// symbol, which includes the symbol, the exchange name, and how confident we are
+// that this symbol is affected by a piece of intelligence
+message Forecast {
+  string id  = 1;
+  string ric = 2;
+  double score = 3;
+  Symbol symbol = 4;
+  Label label = 5;
+}
+
+// Label represents the price change forecast
+enum Label {
+  unknown = 0;
+  down = 1;
+  up1_5 = 2;
+  up2 = 3;
+  up2_5 = 4;
+  up3 = 5;
+  up3_5 = 6;
+  up4 = 7;
+  higher = 8;
+}
+
+// Symbol holds the raw representation of a symbol within Anglo Korean
+// tied to a piece of intelligence.
+//
+// Symbol and Exchange are pretty self explanatory.
+//
+// Score and Ratio are used to express how confident we are that we've
+// identified the correct symbol from a piece of intellegince; when processing
+// data we assign a score to each symbol we derive- if the intelligence references
+// a symbol directly then we add n points, if there's a reference to a company
+// name or initialism then we add n/2 points, and if there's a reference to
+// a corporate office's name we add n/5 points.
+//
+// Where a score is quite low, or where there are many symbols with the same
+// score (like a company on many markets), or where the ratio of this symbol
+// to other symbols scores (if our symbol score is less than a third of all the
+// scores added together, for instance) then we already discard forecasts.
+//
+// By passing it here, we allow for clients to fine-tune their own confidence
+// scoring if they need to.
+message Symbol {
+  string symbol = 1;
+  double score = 2;
+  double ratio = 3;
+  string exchange = 4;
+}
+```
