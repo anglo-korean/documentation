@@ -8,7 +8,7 @@ nav_order: 1
 
 The simplest way to start consuming forecasts is with [grpcurl](https://github.com/fullstorydev/grpcurl). Install this, and then continue below.
 
-### Creating an account
+## Creating an account
 
 Visit [https://anko-investor.com/](https://anko-investor.com/) and click "Get Started".
 
