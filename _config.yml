@@ -1,4 +1,4 @@
 ---
 title: "Anko Investor Documentation"
 remote_theme: just-the-docs/just-the-docs
-search_enabled: false
+search_enabled: true
